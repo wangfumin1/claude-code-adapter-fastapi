@@ -49,7 +49,9 @@ class MessageConverter:
 
             if settings.enable_tool_selection:
                 # 启用工具选择时，追加到用户消息中
-                logger.info(f"工具选择已启用，将 {len(tools)} 个工具追加到messages，role=user")
+                logger.info(
+                    f"工具选择已启用，将 {len(tools)} 个工具追加到messages，role=user"
+                )
             else:
                 # 未启用工具选择时，拼接到系统提示词中
                 system_parts.append(tool_prompt)
@@ -144,7 +146,9 @@ class ResponseProcessor:
                         )
                     except Exception:
                         args = {}
-                        logger.warning(f"解析工具调用参数失败: {func.get('arguments')}, 使用空参数")
+                        logger.warning(
+                            f"解析工具调用参数失败: {func.get('arguments')}, 使用空参数"
+                        )
 
                     content_blocks.append(
                         {

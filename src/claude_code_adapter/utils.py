@@ -150,7 +150,9 @@ def parse_tool_calls_from_response(content: str) -> Tuple[List[Dict[str, Any]], 
                         },
                     }
                     tool_calls.append(tool_call)
-                    tool_json_segments.append((json_str, start, end))  # 仅记录工具调用 JSON
+                    tool_json_segments.append(
+                        (json_str, start, end)
+                    )  # 仅记录工具调用 JSON
 
             except json.JSONDecodeError:
                 continue
