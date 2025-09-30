@@ -305,7 +305,7 @@ export LOG_LEVEL=DEBUG
 ## 下一步
 
 - [⚙️ 配置说明](configuration.md) - 了解所有配置选项
-- [📚 API文档](api.md) - 查看详细的API参考  
+- [📚 API文档](api.md) - 查看详细的API参考
 - [🛠️ 开发指南](development.md) - 学习如何贡献代码
 
 > 📝 **相关文档**: 如果遇到问题，请查看 [故障排除](#故障排除) 部分或参考 [开发指南](development.md) 中的调试部分。

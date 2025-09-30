@@ -11,8 +11,8 @@ from openai import AsyncOpenAI
 
 from .config import settings
 from .utils import (
-    flatten_content,
     convert_tools_to_prompt,
+    flatten_content,
     parse_tool_calls_from_response,
 )
 
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class MessageConverter:
     """消息转换服务"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.tool_use_prompt = settings.tool_use_prompt
 
     def convert_anthropic_to_openai_messages(
@@ -49,9 +49,7 @@ class MessageConverter:
 
             if settings.enable_tool_selection:
                 # 启用工具选择时，追加到用户消息中
-                logger.info(
-                    f"工具选择已启用，将 {len(tools)} 个工具追加到messages，role=user"
-                )
+                logger.info(f"工具选择已启用，将 {len(tools)} 个工具追加到messages，role=user")
             else:
                 # 未启用工具选择时，拼接到系统提示词中
                 system_parts.append(tool_prompt)
@@ -83,12 +81,12 @@ class MessageConverter:
 class OpenAIClient:
     """OpenAI客户端服务"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = AsyncOpenAI(
             api_key=settings.target_api_key, base_url=settings.target_base_url
         )
 
-    async def create_completion(self, payload: Dict[str, Any]):
+    async def create_completion(self, payload: Dict[str, Any]) -> Any:
         """创建完成请求"""
         return await self.client.chat.completions.create(**payload)
 
@@ -96,13 +94,13 @@ class OpenAIClient:
 class ToolSelectionClient:
     """工具选择专用客户端服务"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = AsyncOpenAI(
             api_key=settings.tool_selection_api_key,
             base_url=settings.tool_selection_base_url,
         )
 
-    async def create_completion(self, payload: Dict[str, Any]):
+    async def create_completion(self, payload: Dict[str, Any]) -> Any:
         """创建工具选择完成请求"""
         return await self.client.chat.completions.create(**payload)
 
@@ -144,8 +142,9 @@ class ResponseProcessor:
                             if isinstance(func["arguments"], str)
                             else func["arguments"]
                         )
-                    except:
+                    except Exception:
                         args = {}
+                        logger.warning(f"解析工具调用参数失败: {func.get('arguments')}, 使用空参数")
 
                     content_blocks.append(
                         {
@@ -182,9 +181,7 @@ class ResponseProcessor:
             "content": content_blocks or [{"type": "text", "text": ""}],
         }
 
-        logger.info(
-            f"返回响应: {len(content_blocks)} 个块, stop_reason={anthropic_resp['stop_reason']}"
-        )
+        logger.info(f"返回响应: {len(content_blocks)} 个块")
         logger.debug(
             f"响应内容: {json.dumps(anthropic_resp, ensure_ascii=False, indent=2)}"
         )

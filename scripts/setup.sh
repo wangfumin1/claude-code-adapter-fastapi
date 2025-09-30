@@ -68,7 +68,7 @@ echo ""
 if [ "$ENV_TYPE" = "conda" ]; then
     ENV_NAME="claude-adapter"
     echo "🔧 创建conda环境 '$ENV_NAME'..."
-    
+
     # 检查环境是否已存在
     if conda env list | grep -q "$ENV_NAME" && [ "$FORCE" = false ]; then
         echo "ℹ️ conda环境 '$ENV_NAME' 已存在，跳过创建"
@@ -82,7 +82,7 @@ if [ "$ENV_TYPE" = "conda" ]; then
     fi
 else
     echo "🔧 创建虚拟环境..."
-    
+
     # 检查虚拟环境是否已存在
     if [ -d "venv" ] && [ "$FORCE" = false ]; then
         echo "ℹ️ 虚拟环境已存在，跳过创建"

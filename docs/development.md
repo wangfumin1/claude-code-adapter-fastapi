@@ -326,7 +326,7 @@ make docs-build
 ## 🔗 相关文档
 
 - [🚀 快速开始指南](getting-started.md) - 安装和基本使用
-- [⚙️ 配置说明](configuration.md) - 详细配置选项  
+- [⚙️ 配置说明](configuration.md) - 详细配置选项
 - [📚 API文档](api.md) - API接口参考
 - [🤝 贡献指南](../../CONTRIBUTING.md) - 简洁的贡献流程和规范
 

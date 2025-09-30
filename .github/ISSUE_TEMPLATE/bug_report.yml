@@ -10,4 +10,3 @@ body:
       placeholder: 复现步骤、错误日志、环境信息
     validations:
       required: true
-

@@ -4,19 +4,19 @@ FastAPI应用主文件
 
 import json
 import logging
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import uvicorn
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse, StreamingResponse
 
-from .config import settings, config_manager
+from .config import config_manager, settings
 from .models import HealthResponse
 from .services import (
     MessageConverter,
     OpenAIClient,
-    ToolSelectionClient,
     ResponseProcessor,
+    ToolSelectionClient,
 )
 from .utils import flatten_content
 
@@ -43,13 +43,13 @@ response_processor = ResponseProcessor()
 
 
 @app.get("/health", response_model=HealthResponse)
-async def health():
+async def health() -> HealthResponse:
     """健康检查端点"""
     return HealthResponse(ok=True, target_base=settings.target_base_url)
 
 
 @app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
+async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     """全局异常处理器，记录所有未捕获的异常"""
     logger.exception(f"未被捕获的异常: {exc}")
     return JSONResponse(
@@ -58,7 +58,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 @app.post("/v1/messages")
-async def proxy_messages(request: Request):
+async def proxy_messages(request: Request) -> Any:
     """代理消息请求到目标服务"""
     try:
         body = await request.json()
@@ -116,7 +116,7 @@ async def proxy_messages(request: Request):
 
         if stream_mode:
 
-            async def event_stream():
+            async def event_stream() -> Any:
                 try:
                     stream = await openai_client.create_completion(payload)
                     async for chunk in stream:
@@ -229,7 +229,7 @@ def create_app() -> FastAPI:
     return app
 
 
-def main():
+def main() -> None:
     """命令行入口：启动 uvicorn 服务（仅服务端部署）"""
     uvicorn.run(
         "claude_code_adapter.app:app",

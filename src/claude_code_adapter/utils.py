@@ -3,15 +3,15 @@
 """
 
 import json
+import logging
 import re
 import time
 from typing import Any, Dict, List, Tuple
-import logging
 
 logger = logging.getLogger(__name__)
 
 
-def flatten_content(content: Any) -> str:
+def flatten_content(content: Any) -> Any:
     """将复杂内容结构扁平化为字符串"""
     if content is None:
         return ""
@@ -72,7 +72,7 @@ def extract_json_objects(text: str, mode: str = "object") -> List[Tuple[str, int
         return results
 
     # 裸 JSON 扫描器
-    stack = []
+    stack: list[str] = []
     start_idx = None
     opening_char = "{" if mode == "object" else "["
     closing_char = "}" if mode == "object" else "]"
@@ -150,9 +150,7 @@ def parse_tool_calls_from_response(content: str) -> Tuple[List[Dict[str, Any]], 
                         },
                     }
                     tool_calls.append(tool_call)
-                    tool_json_segments.append(
-                        (json_str, start, end)
-                    )  # 仅记录工具调用 JSON
+                    tool_json_segments.append((json_str, start, end))  # 仅记录工具调用 JSON
 
             except json.JSONDecodeError:
                 continue

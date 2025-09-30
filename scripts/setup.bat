@@ -49,7 +49,7 @@ echo 当前环境类型: %ENV_TYPE%
 
 if "%ENV_TYPE%"=="conda" (
     echo 🔧 创建conda环境 '%ENV_NAME%'...
-    
+
     REM 检查环境是否已存在
     echo 检查conda环境是否已存在...
     call conda env list | findstr "%ENV_NAME%" >nul 2>&1
@@ -62,7 +62,7 @@ if "%ENV_TYPE%"=="conda" (
             call conda env remove -n %ENV_NAME% -y >nul 2>&1
         )
     )
-    
+
     echo 正在创建conda环境...
     call conda create -n %ENV_NAME% python=3.11 -y
     if errorlevel 1 (
@@ -73,7 +73,7 @@ if "%ENV_TYPE%"=="conda" (
     echo ✅ conda环境 '%ENV_NAME%' 创建成功
 ) else (
     echo 🔧 创建虚拟环境...
-    
+
     REM 检查Python是否可用
     python --version >nul 2>&1
     if errorlevel 1 (
@@ -93,7 +93,7 @@ if "%ENV_TYPE%"=="conda" (
             rmdir /s /q venv >nul 2>&1
         )
     )
-    
+
     echo 正在创建虚拟环境...
     python -m venv venv
     if errorlevel 1 (

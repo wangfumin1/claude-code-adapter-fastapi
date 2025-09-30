@@ -3,13 +3,14 @@
 支持从配置文件和环境变量读取配置
 """
 
-import yaml
 import json
-from typing import Any, Dict, Optional, List
+import logging
 from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import yaml
 from pydantic import Field
 from pydantic_settings import BaseSettings
-import logging
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -62,21 +63,27 @@ class Settings(BaseSettings):
     )
     tool_selection_prompt: str = Field(
         default="""
-  Select up to {max_tools} tools from 'Available tools' that best match the user's needs based on recent messages. Only use tool names from 'Available tools', not from messages. Choose tools proactively if they seem relevant. Return a JSON array of tool names, or [] if no tools apply.
+Select up to {max_tools} tools from 'Available tools'
+that best match the user's needs based on recent messages.
+Only use tool names from 'Available tools', not from messages.
+Choose tools proactively if they seem relevant.
+Return a JSON array of tool names, or [] if no tools apply.
 
-  Recent messages: [
-  {recent_messages}
-  ]
+Recent messages: [
+{recent_messages}
+]
 
-  Available tools: [
-  {tools_list}
-  ]""",
+Available tools: [
+{tools_list}
+]""",
         alias="TOOL_SELECTION_PROMPT",
     )
     recent_messages_count: int = Field(default=5, alias="RECENT_MESSAGES_COUNT")
     max_tools_to_select: int = Field(default=3, alias="MAX_TOOLS_TO_SELECT")
     tool_use_prompt: str = Field(
-        default="""You have access to the following tools. The available tools are defined in JSON format below:
+        default="""
+You have access to the following tools.
+The available tools are defined in JSON format below:
 
 ```json
 {tools_json}
@@ -95,7 +102,7 @@ When you need to use a tool, respond with JSON in this exact format:
 Use the tools to help complete the user's request.""",
         alias="TOOL_USE_PROMPT",
     )
-    logger.info(f"环境配置加载完成")
+    logger.info("环境配置加载完成")
 
 
 class ConfigManager:
@@ -156,7 +163,7 @@ class ConfigManager:
         """获取配置值"""
         return getattr(self.settings, key, default)
 
-    def reload(self):
+    def reload(self) -> None:
         """重新加载配置"""
         self.settings = self._load_settings()
 

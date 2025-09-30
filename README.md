@@ -32,7 +32,7 @@ cd claude-code-adapter-fastapi
 # Windows用户
 scripts\setup.bat
 
-# Linux/macOS用户  
+# Linux/macOS用户
 ./scripts/setup.sh
 ```
 

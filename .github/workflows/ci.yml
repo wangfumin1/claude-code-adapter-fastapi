@@ -29,4 +29,3 @@ jobs:
           mypy src
       - name: Run tests
         run: pytest -v --cov=src --cov-report=xml
-
