@@ -24,8 +24,9 @@ jobs:
           pip install -e .
       - name: Lint & Type check
         run: |
-          black --check src tests
+          black --config pyproject.toml --check src tests
           isort --check-only src tests
-          mypy src
+          mypy --install-types
+          mypy --explicit-package-bases --install-types --non-interactive src
       - name: Run tests
         run: pytest -v --cov=src --cov-report=xml
