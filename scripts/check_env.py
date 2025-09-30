@@ -148,7 +148,7 @@ def main():
     else:
         print("❌ 环境检查未通过，请根据上述提示修复问题。")
         print("\n快速修复:")
-        print("1. 运行设置脚本: python scripts/setup.py")
+        print("1. 运行设置脚本: ./scripts/setup.sh（Linux/macOS）或 scripts\\setup.bat（Windows）")
         print("2. 或手动安装: pip install -r requirements.txt")
         print("3. 修改配置文件: config.yaml")
 
