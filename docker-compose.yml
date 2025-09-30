@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  claude-code-adapter:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - TARGET_BASE_URL=http://host.docker.internal:1234
+      - TARGET_API_KEY=key
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 可选：添加一个简单的测试目标服务
+  test-target:
+    image: nginx:alpine
+    ports:
+      - "1234:80"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+    profiles:
+      - test

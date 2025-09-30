@@ -1,0 +1,13 @@
+name: Bug report
+description: 报告一个问题
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么？
+      description: 请描述实际行为与预期差异
+      placeholder: 复现步骤、错误日志、环境信息
+    validations:
+      required: true
+

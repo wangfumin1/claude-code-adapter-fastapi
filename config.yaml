@@ -1,0 +1,63 @@
+# Claude Code Adapter FastAPI 配置文件
+
+# 服务配置
+host: "127.0.0.1"
+port: 8000
+debug: false
+log_level: "INFO"
+
+# 目标服务配置（建议用环境变量覆盖）
+target_base_url: "http://127.0.0.1:1234/v1"
+target_api_key_header: "Authorization"
+# 模型配置
+target_model_config:
+  model: 'qwen3-4b-instruct'
+  max_tokens: 4096
+  temperature: 0.1
+
+# 系统提示词相关配置
+enable_raw_system_prompt: false
+enable_custom_system_prompt: true
+custom_system_prompt: |
+  你是Claude Code。
+
+# 工具选择配置
+enable_tool_selection: true
+tool_selection_base_url: "http://127.0.0.1:1234/v1"
+tool_selection_model_config:
+  model: "qwen3-4b-instruct_1"
+recent_messages_count: 5
+max_tools_to_select: 3
+# 当工具选择失败或未启用时，将按此顺序作为默认工具列表
+default_tools:
+  - Read
+  - Edit
+  - Grep
+tool_selection_prompt: |
+  Select up to {max_tools} tools from 'Available tools' that best match the user's needs based on recent messages. Only use tool names from 'Available tools', not from messages. Choose tools proactively if they seem relevant. Return a JSON array of tool names, or [] if no tools apply.
+
+  Recent messages: [
+  {recent_messages}
+  ]
+
+  Available tools: [
+  {tools_list}
+  ]
+tool_use_prompt: |
+  You have access to the following tools. The available tools are defined in JSON format below:
+
+  ```json
+  {tools_json}
+  ```
+
+  When you need to use a tool, respond with JSON in this exact format:
+  ```json
+  {
+    "type": "tool_use",
+    "id": "call_123",
+    "name": "ToolName",
+    "input": {"param": "value"}
+  }
+  ```
+
+  Use the tools to help complete the user's request.
