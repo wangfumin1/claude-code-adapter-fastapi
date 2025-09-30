@@ -79,17 +79,16 @@ docker run -p 8000:8000 -v $(pwd)/config.yaml:/app/config.yaml claude-code-adapt
 ```yaml
 # 目标服务配置
 target_base_url: "http://127.0.0.1:1234/v1"
-target_api_key: "${TARGET_API_KEY:-change-me}"
 
 # 服务配置
 host: "127.0.0.1"
 port: 8000
 
-# 工具默认列表（当选择失败时使用）
-default_tools:
-  - Read
-  - Edit
-  - Grep
+```
+
+# 使用环境变量配置KEY（推荐）
+```bash
+export TARGET_API_KEY="your-secret-key"
 ```
 
 > ⚙️ **完整配置说明**: 查看 [docs/configuration.md](docs/configuration.md) 获取所有配置选项的详细说明。
