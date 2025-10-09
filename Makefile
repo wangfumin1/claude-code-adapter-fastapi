@@ -1,10 +1,13 @@
 .PHONY: help install install-dev test lint format clean run docker-build docker-run
 
 help: ## 显示帮助信息
+	@chcp 65001 >nul
 	@echo "可用的命令:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@python -c "import re; \
+	[print(f'{m[0]:<20} {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)', open('Makefile', encoding='utf-8').read(), re.M)]"
 
 setup: ## 创建虚拟环境并安装依赖
+	@chcp 65001 >nul
 	python -m venv venv
 	@echo "虚拟环境已创建，请运行以下命令激活："
 	@echo "Windows: venv\\Scripts\\activate"
@@ -12,6 +15,7 @@ setup: ## 创建虚拟环境并安装依赖
 	@echo "然后运行: make install"
 
 setup-windows-bat: ## Windows快速设置（批处理）
+	@chcp 65001 >nul
 	scripts/setup.bat
 
 setup-conda: ## 使用conda创建环境
