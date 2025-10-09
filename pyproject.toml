@@ -124,6 +124,11 @@ exclude_lines = [
     "@(abc\\.)?abstractmethod",
 ]
 
+[tool.poetry]
+packages = [
+    { include = "claude_code_adapter", from = "src" }
+]
+
 [[tool.poetry.source]]
 name = "mirrors"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
