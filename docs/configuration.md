@@ -18,8 +18,8 @@
 
 | 配置项 | 环境变量 | 默认值 | 说明 |
 |--------|----------|--------|------|
-| `target_base_url` | `TARGET_BASE_URL` | `http://127.0.0.1:1234` | 目标服务的URL |
-| `target_api_key` | `TARGET_API_KEY` | `key` | 目标服务的API密钥（建议配置为环境变量） |
+| `target_base_url` | `TARGET_BASE_URL` | `http://127.0.0.1:1234` | 目标模型服务的URL |
+| `target_api_key` | `TARGET_API_KEY` | `key` | 目标模型服务的API密钥（建议配置为环境变量） |
 | `target_api_key_header` | `TARGET_API_KEY_HEADER` | `Authorization` | API密钥的请求头名称 |
 | `target_model_config` | `TARGET_MODEL_CONFIG` | 见下方 | 模型的配置参数（可包含温度、最大token等），支持嵌套JSON结构 |
 
@@ -51,15 +51,15 @@
 | 配置项                  | 环境变量                | 默认值                                                       | 说明                           |
 | ----------------------- | ----------------------- | ------------------------------------------------------------ | ------------------------------ |
 | `enable_tool_selection` | `ENABLE_TOOL_SELECTION` | `false`                                                      | 是否启用工具选择功能           |
-| `tool_selection_base_url` | `TOOL_SELECTION_BASE_URL` | `http://127.0.0.1:1234`                                  | 工具选择服务的基础URL           |
-| `tool_selection_api_key` | `TOOL_SELECTION_API_KEY` | `key`                                                      | 工具选择服务的API密钥（建议配置为环境变量） |
+| `tool_selection_base_url` | `TOOL_SELECTION_BASE_URL` | `http://127.0.0.1:1234`                                  | 工具选择模型服务的基础URL           |
+| `tool_selection_api_key` | `TOOL_SELECTION_API_KEY` | `key`                                                      | 工具选择模型服务的API密钥（建议配置为环境变量） |
 | `tool_selection_model_config` | `TOOL_SELECTION_MODEL_CONFIG` | 见下方                                           | 工具选择模型的配置参数（可包含温度、最大token等，建议model配置为与target_model_config中model不同的模型，以避免缓存失效），支持嵌套JSON结构 |
 | `recent_messages_count` | `RECENT_MESSAGES_COUNT` | `5`                                                          | 用于工具选择的最近消息数量     |
 | `max_tools_to_select`   | `MAX_TOOLS_TO_SELECT`   | `3`                                                          | 每次工具选择最多返回的工具数量 |
 | `default_tools`         | `DEFAULT_TOOLS`         | `["Read", "Edit", "Grep"]`                                   | 工具选择失败时使用的默认工具名称列表 |
 | `tool_selection_prompt` | `TOOL_SELECTION_PROMPT` | 见下方                                                       | 工具选择提示词模板             |
 | `tool_use_prompt`       | `TOOL_USE_PROMPT`       | 见下方                                                       | 工具使用提示词模板             |
-| `tool_model_config`     | `TOOL_MODEL_CONFIG`     | 见下方                                                       | 模型级别的配置参数（可包含温度、最大token等），支持嵌套JSON结构 |
+| `tool_selection_model_config`     | `TOOL_SELECTION_MODEL_CONFIG`     | 见下方                                                       | 模型级别的配置参数（可包含温度、最大token等），支持嵌套JSON结构 |
 
 ### 工具定义处理策略
 
