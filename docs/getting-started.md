@@ -117,8 +117,8 @@ pip install -r requirements-dev.txt
 
 项目支持多种配置方式，按优先级排序：
 
-1. 环境变量
-2. 配置文件 (`config.yaml`)
+1. 配置文件 (`config.yaml`)
+2. 环境变量
 3. 默认值
 
 ### 2. 创建配置文件
