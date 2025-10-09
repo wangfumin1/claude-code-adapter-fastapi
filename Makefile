@@ -1,29 +1,41 @@
 .PHONY: help install install-dev test lint format clean run docker-build docker-run
 
+ifeq ($(OS),Windows_NT)
+ENCODE_SETUP = chcp 65001 >nul
+else
+ENCODE_SETUP = export LC_ALL=C.UTF-8; export LANG=C.UTF-8
+endif
+
 help: ## 显示帮助信息
-	@chcp 65001 >nul
+	@$(ENCODE_SETUP)
 	@echo "可用的命令:"
 	@python -c "import re; \
-	[print(f'{m[0]:<20} {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)', open('Makefile', encoding='utf-8').read(), re.M)]"
+	[print(f'make {m[0]:<20} {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)', open('Makefile', encoding='utf-8').read(), re.M)]"
 
-setup: ## 创建虚拟环境并安装依赖
-	@chcp 65001 >nul
+ifeq ($(OS),Windows_NT)
+setup: ## Windows快速设置
+	@call scripts\setup.bat
+else
+setup: ## Linux快速设置
+	@./scripts/setup.sh
+endif
+
+setup-venv: ## 使用venv创建环境
+	@$(ENCODE_SETUP)
 	python -m venv venv
 	@echo "虚拟环境已创建，请运行以下命令激活："
 	@echo "Windows: venv\\Scripts\\activate"
 	@echo "macOS/Linux: source venv/bin/activate"
 	@echo "然后运行: make install"
 
-setup-windows-bat: ## Windows快速设置（批处理）
-	@chcp 65001 >nul
-	scripts/setup.bat
-
 setup-conda: ## 使用conda创建环境
+	@$(ENCODE_SETUP)
 	conda create -n claude-adapter python=3.11 -y
 	@echo "conda环境已创建，请运行: conda activate claude-adapter"
 	@echo "然后运行: make install"
 
 setup-poetry: ## 使用poetry创建环境
+	@$(ENCODE_SETUP)
 	poetry install
 	@echo "poetry环境已创建，请运行: poetry shell"
 
@@ -53,15 +65,16 @@ test-cov: ## 运行测试并生成覆盖率报告
 
 lint: ## 运行代码检查
 	flake8 src/ tests/
-	mypy src/
+	mypy --explicit-package-bases --install-types --non-interactive src tests
 
 format: ## 格式化代码
-	black src/ tests/
+	black --config pyproject.toml src/ tests/
 	isort src/ tests/
 
 format-check: ## 检查代码格式
-	black --check src/ tests/
-	isort --check-only src/ tests/
+	black --config pyproject.toml --check src tests
+	isort --check-only src tests
+	mypy --explicit-package-bases --install-types --non-interactive src tests
 
 clean: ## 清理临时文件
 	find . -type f -name "*.pyc" -delete
