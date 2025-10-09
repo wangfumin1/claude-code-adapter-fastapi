@@ -69,7 +69,7 @@ def check_dependencies() -> bool:
         print("请运行: pip install -r requirements.txt")
         return False
     else:
-        print("✅ 所有依赖包已安装")
+        print("✅ 必要依赖包已安装")
         return True
 
 
