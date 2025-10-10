@@ -32,12 +32,14 @@ class TestMessagesEndpoint:
     def test_messages_empty_request(self) -> None:
         """测试空请求"""
         response = client.post("/v1/messages", json={})
-        assert response.status_code == 200
+        assert response.status_code == 400
 
     def test_messages_basic_request(self) -> None:
         """测试基本请求"""
         request_data = {
+            "model": "test-model",  # 此字段将被配置文件中的模型覆盖
             "messages": [{"role": "user", "content": "Hello"}],
         }
         response = client.post("/v1/messages", json=request_data)
+        # 基本请求应该返回200，模型配置来自配置文件
         assert response.status_code == 200

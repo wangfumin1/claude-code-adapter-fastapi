@@ -53,7 +53,7 @@ async def global_exception_handler(request: Request, exc: Exception) -> JSONResp
     """全局异常处理器，记录所有未捕获的异常"""
     logger.exception(f"未被捕获的异常: {exc}")
     return JSONResponse(
-        status_code=500, content={"detail": f"Internal server error: {str(exc)}"}
+        status_code=500, content={"detail": f"内部服务器错误: {str(exc)}"}
     )
 
 
@@ -65,7 +65,13 @@ async def proxy_messages(request: Request) -> Any:
         logger.debug(f"收到请求体: {body}")
     except Exception:
         logger.exception("解析请求体失败")
-        raise HTTPException(status_code=400, detail="invalid json body")
+        raise HTTPException(status_code=400, detail="无效的JSON")
+
+    messages = body.get("messages", [])
+    if not messages:
+        raise HTTPException(status_code=400, detail="messages 不能为空")
+    if not isinstance(messages, list):
+        raise HTTPException(status_code=400, detail="messages 必须是一个列表")
 
     try:
         # 重新初始化以应用新的配置
