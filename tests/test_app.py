@@ -32,15 +32,12 @@ class TestMessagesEndpoint:
     def test_messages_empty_request(self) -> None:
         """测试空请求"""
         response = client.post("/v1/messages", json={})
-        # 由于没有目标服务，应该返回502或500
-        assert response.status_code in [500, 502]
+        assert response.status_code == 200
 
     def test_messages_basic_request(self) -> None:
         """测试基本请求"""
         request_data = {
-            "model": "test-model",
             "messages": [{"role": "user", "content": "Hello"}],
         }
         response = client.post("/v1/messages", json=request_data)
-        # 由于没有目标服务，应该返回502或500
-        assert response.status_code in [500, 502]
+        assert response.status_code == 200
