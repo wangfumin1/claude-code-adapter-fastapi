@@ -21,8 +21,10 @@ git clone https://github.com/wangfumin1/claude-code-adapter-fastapi.git
 cd claude-code-adapter-fastapi
 
 # 使用平台特定脚本
-# Windows: scripts\setup.bat
-# Linux/macOS: ./scripts/setup.sh
+# Windows:
+scripts\setup.bat
+# Linux/macOS:
+./scripts/setup.sh
 ```
 
 ### 启动服务
@@ -54,7 +56,7 @@ python -m uvicorn src.claude_code_adapter.app:app --host 0.0.0.0 --port 8000
 graph TD
     A[客户端请求] --> B[接收Anthropic格式]
     B --> C[转换工具定义]
-    C --> D[构建系统提示词]
+    C --> D[构建系统提示词或用户消息]
     D --> E[转换消息格式]
     E --> F[转发到目标服务]
     F --> G[接收响应]
