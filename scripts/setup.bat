@@ -133,19 +133,6 @@ if "%ENV_TYPE%"=="conda" (
     echo ✅ 虚拟环境激活成功
 )
 
-REM 检查依赖是否已安装
-echo.
-echo 📦 检查依赖...
-call pip list | findstr "fastapi" >nul 2>&1
-if not errorlevel 1 (
-    if "%FORCE%"=="false" (
-        echo ℹ️ 依赖已安装，跳过安装
-        goto :end
-    ) else (
-        echo 🔄 强制重新安装依赖...
-    )
-)
-
 REM 升级pip
 echo.
 echo ⬆️ 升级pip...
@@ -158,7 +145,7 @@ REM 安装依赖
 echo.
 echo 📥 安装项目依赖...
 if not exist requirements.txt (
-    echo ❌ requirements.txt文件不存在
+    echo ❌ 未找到 requirements.txt 文件
     pause
     exit /b 1
 )
@@ -189,4 +176,3 @@ echo 4. 或直接运行: python -m uvicorn src.claude_code_adapter.app:app --hos
 echo.
 echo 📚 更多信息请查看: docs/getting-started.md
 echo.
-pause

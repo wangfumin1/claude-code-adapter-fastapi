@@ -1,8 +1,13 @@
 #!/bin/bash
 
 # 设置UTF-8编码
-export LANG=zh_CN.UTF-8
-export LC_ALL=zh_CN.UTF-8
+if ! locale -a | grep -q "zh_CN.utf8"; then
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+else
+    export LANG=zh_CN.UTF-8
+    export LC_ALL=zh_CN.UTF-8
+fi
 
 # 解析命令行参数
 ENV_TYPE="venv"
@@ -28,17 +33,6 @@ echo "🚀 Claude Code Adapter FastAPI 快速设置"
 echo "================================================"
 echo "环境类型: $ENV_TYPE"
 
-if [ "$ENV_TYPE" = "venv" ]; then
-# 检查Python是否安装
-    if ! command -v python3 &> /dev/null; then
-        echo "❌ Python3未安装"
-        echo "请先安装Python 3.9或更高版本"
-        exit 1
-    fi
-fi
-echo "✅ Python已安装"
-python3 --version
-
 # 检查环境管理工具
 if [ "$ENV_TYPE" = "conda" ]; then
     if ! command -v conda &> /dev/null; then
@@ -53,15 +47,27 @@ else
 fi
 
 if [ "$ENV_TYPE" = "venv" ]; then
+# 检查Python是否安装
+    if ! command -v python3 &> /dev/null; then
+        echo "❌ Python3未安装"
+        echo "请先安装Python 3.9或更高版本"
+        exit 1
+    fi
+    echo "✅ Python已安装"
+    python3 --version
+fi
+
+if [ "$ENV_TYPE" = "venv" ]; then
 # 检查Python版本
     python_version=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
     required_version="3.9"
 
-    if [ "$(printf '%s\n' "$required_version" "$python_version" | sort -V | head -n1)" != "$required_version" ]; then
+    if [ "$(printf '%s\n' "$python_version" "$required_version" | sort -V | head -n1)" != "$required_version" ]; then
         echo "❌ Python版本过低: $python_version"
-        echo "需要Python 3.9或更高版本"
+        echo "需要Python $required_version或更高版本"
         exit 1
     fi
+
 fi
 # 创建环境
 echo ""
@@ -100,32 +106,25 @@ fi
 echo ""
 if [ "$ENV_TYPE" = "conda" ]; then
     echo "🔄 激活conda环境..."
-    source $(conda info --base)/etc/profile.d/conda.sh
+    eval "$(conda shell.bash hook)"
     conda activate $ENV_NAME
 else
     echo "🔄 激活虚拟环境..."
     source venv/bin/activate
 fi
 
-# 检查依赖是否已安装
-echo ""
-echo "📦 检查依赖..."
-if pip list | grep -q "fastapi" && [ "$FORCE" = false ]; then
-    echo "ℹ️ 依赖已安装，跳过安装"
-else
-    # 升级pip
-    echo "⬆️ 升级pip..."
-    python -m pip install --upgrade pip
+# 升级pip
+echo "⬆️ 升级pip..."
+python -m pip install --upgrade pip
 
-    # 安装依赖
-    echo "📥 安装项目依赖..."
-    pip install -r requirements.txt
-    if [ $? -ne 0 ]; then
-        echo "❌ 依赖安装失败"
-        exit 1
-    fi
-    echo "✅ 依赖安装成功"
+# 安装依赖
+echo "📥 安装项目依赖..."
+pip install -r requirements.txt
+if [ $? -ne 0 ]; then
+    echo "❌ 依赖安装失败"
+    exit 1
 fi
+echo "✅ 依赖安装成功"
 
 echo ""
 echo "================================================"
