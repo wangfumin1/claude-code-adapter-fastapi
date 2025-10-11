@@ -17,7 +17,8 @@ setup: ## Windows快速设置
 	@call scripts\setup.bat
 else
 setup: ## Linux快速设置
-	@./scripts/setup.sh
+	@chmod +x ./scripts/setup.sh
+	@bash ./scripts/setup.sh
 endif
 
 setup-venv: ## 使用venv创建环境
