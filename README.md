@@ -1,6 +1,6 @@
 # Claude Code Adapter FastAPI
 
-[![CI/CD Pipeline](https://github.com/wangfumin1/claude-code-adapter-fastapi/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/wangfumin1/claude-code-adapter-fastapi/actions)
+[![CI/CD Pipeline](https://github.com/wangfumin1/claude-code-adapter-fastapi/actions/workflows/ci.yml/badge.svg)](https://github.com/wangfumin1/claude-code-adapter-fastapi/actions/workflows/ci.yml)
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
