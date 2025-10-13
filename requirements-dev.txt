@@ -3,7 +3,7 @@
 
 # 代码质量工具
 black==25.9.0
-isort==6.0.1
+isort==6.1.0
 flake8==7.3.0
 mypy==1.18.2
 pre-commit>=3.5.0
