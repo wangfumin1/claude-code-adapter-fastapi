@@ -16,7 +16,6 @@ from .services import (
     MessageConverter,
     OpenAIClient,
     ResponseProcessor,
-    ToolSelectionClient,
 )
 from .utils import flatten_content
 
@@ -38,7 +37,7 @@ app = FastAPI(
 # 初始化服务
 message_converter = MessageConverter()
 openai_client = OpenAIClient()
-tool_selection_client = ToolSelectionClient()
+tool_selection_client = OpenAIClient()
 response_processor = ResponseProcessor()
 
 
@@ -76,7 +75,6 @@ async def proxy_messages(request: Request) -> Any:
     try:
         # 重新初始化以应用新的配置
         config_manager.reload()
-        openai_client = OpenAIClient()
         settings = config_manager.settings
 
         tools = body.get("tools") or []
@@ -113,10 +111,11 @@ async def proxy_messages(request: Request) -> Any:
 
         stream_mode = bool(body.get("stream"))
         payload["stream"] = stream_mode
-
+        url = settings.target_base_url
+        key = settings.target_api_key
         # 记录实际调用目标
         logger.info(
-            f"请求地址：{openai_client.client.base_url}，"
+            f"请求地址：{url}，"
             f"模型：{settings.target_model_config['model']}，流式：{stream_mode}"
         )
 
@@ -124,7 +123,7 @@ async def proxy_messages(request: Request) -> Any:
 
             async def event_stream() -> Any:
                 try:
-                    stream = await openai_client.create_completion(payload)
+                    stream = await openai_client.create_completion(url, key, payload)
                     async for chunk in stream:
                         yield f"data: {json.dumps(chunk.model_dump())}\n\n".encode()
                 except Exception as e:
@@ -141,7 +140,7 @@ async def proxy_messages(request: Request) -> Any:
             return StreamingResponse(event_stream(), media_type="text/event-stream")
         else:
             try:
-                completion = await openai_client.create_completion(payload)
+                completion = await openai_client.create_completion(url, key, payload)
                 lm_resp = completion.model_dump()
                 logger.debug(f"非流式模型响应: {lm_resp}")
             except Exception as e:
@@ -167,6 +166,9 @@ async def select_tools(
 ) -> List[Dict[str, Any]]:
     if not all_tools:
         return []
+    # 重新加载配置
+    config_manager.reload()
+    settings = config_manager.settings
 
     # 构建待选择工具列表
     tools_list = "\n".join(
@@ -193,7 +195,14 @@ async def select_tools(
         raise ValueError("工具选择模型未配置")
 
     try:
-        completion = await tool_selection_client.create_completion(payload)
+        url = settings.tool_selection_base_url
+        key = settings.tool_selection_api_key
+        # 记录实际调用目标
+        logger.info(
+            f"请求地址：{url}，"
+            f"模型：{settings.tool_selection_model_config['model']}"
+        )
+        completion = await tool_selection_client.create_completion(url, key, payload)
         response_content = completion.choices[0].message.content.strip()
         logger.info(f"工具选择模型响应: {response_content}")
 

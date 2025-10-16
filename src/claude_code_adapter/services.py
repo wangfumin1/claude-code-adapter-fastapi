@@ -83,28 +83,12 @@ class MessageConverter:
 class OpenAIClient:
     """OpenAI客户端服务"""
 
-    def __init__(self) -> None:
-        self.client = AsyncOpenAI(
-            api_key=settings.target_api_key, base_url=settings.target_base_url
-        )
-
-    async def create_completion(self, payload: Dict[str, Any]) -> Any:
+    async def create_completion(
+        self, url: str, key: str, payload: Dict[str, Any]
+    ) -> Any:
         """创建完成请求"""
-        return await self.client.chat.completions.create(**payload)
-
-
-class ToolSelectionClient:
-    """工具选择专用客户端服务"""
-
-    def __init__(self) -> None:
-        self.client = AsyncOpenAI(
-            api_key=settings.tool_selection_api_key,
-            base_url=settings.tool_selection_base_url,
-        )
-
-    async def create_completion(self, payload: Dict[str, Any]) -> Any:
-        """创建工具选择完成请求"""
-        return await self.client.chat.completions.create(**payload)
+        client = AsyncOpenAI(base_url=url, api_key=key)
+        return await client.chat.completions.create(**payload)
 
 
 class ResponseProcessor:
