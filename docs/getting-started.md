@@ -1,5 +1,7 @@
 # 详细安装指南
 
+中文 | [English](/docs/en/getting-started.md)
+
 本指南提供Claude Code Adapter FastAPI的详细安装和配置说明。
 
 ## 📋 环境要求

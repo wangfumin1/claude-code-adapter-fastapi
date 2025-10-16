@@ -1,5 +1,7 @@
 # 贡献指南
 
+中文 | [English](/docs/en/CONTRIBUTING.md)
+
 感谢您有兴趣为 Claude Code Adapter FastAPI 项目做出贡献！
 
 ## 🚀 快速开始

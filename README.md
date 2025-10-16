@@ -4,6 +4,8 @@
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
+中文 | [English](docs/en/README.md)
+
 一个基于 FastAPI 的轻量代理/适配层：将 Anthropic/Claude 的消息与工具调用请求转换为 OpenAI Chat Completions 兼容格式；智能选择工具定义处理策略（系统提示词 vs 用户消息），根据配置自动优化性能和功能完整性；支持可选的自动工具选择、SSE 流式转发，以及将目标模型响应回转为 Anthropic 格式。仅提供服务端代理，不侵入客户端 SDK。
 
 ## 功能特性
@@ -53,6 +55,7 @@ python -m uvicorn src.claude_code_adapter.app:app --host 0.0.0.0 --port 8000
 ### 客户端配置
 
 **重要**：在客户端（如Claude Code）中需要配置环境变量ANTHROPIC_BASE_URL指向本服务地址：
+
 ```bash
 export ANTHROPIC_BASE_URL="http://localhost:8000"
 ```
@@ -83,10 +86,10 @@ target_base_url: "http://127.0.0.1:1234/v1"
 # 服务配置
 host: "127.0.0.1"
 port: 8000
-
 ```
 
-# 使用环境变量配置KEY（推荐）
+### 使用环境变量配置KEY（推荐）
+
 ```bash
 export TARGET_API_KEY="your-secret-key"
 ```
