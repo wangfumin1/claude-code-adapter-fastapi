@@ -29,8 +29,11 @@ logger = logging.getLogger(__name__)
 # 创建FastAPI应用
 app = FastAPI(
     title="Claude Code Tool Prompt Adapter",
-    description="将Claude Code的工具定义添加到系统提示词中，让非原生工具模型也能理解和使用工具",
-    version="1.0.0",
+    description="""一个基于 FastAPI 的轻量代理/适配层：将 Anthropic/Claude 的消息与工具调用请求转换为
+      OpenAI Chat Completions 兼容格式；智能选择工具定义处理策略（系统提示词 vs 用户消息），
+      根据配置自动优化性能和功能完整性；支持可选的自动工具选择、SSE 流式转发，
+      以及将目标模型响应回转为 Anthropic 格式。仅提供服务端代理，不侵入客户端 SDK。""",
+    version="1.0.1",
 )
 
 
