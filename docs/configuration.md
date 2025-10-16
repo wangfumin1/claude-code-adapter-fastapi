@@ -1,5 +1,7 @@
 # 配置说明
 
+中文 | [English](/docs/en/configuration.md)
+
 本文档详细说明Claude Code Adapter FastAPI的所有配置选项。
 
 ## 📁 配置文件
@@ -21,7 +23,7 @@
 | `target_base_url` | `TARGET_BASE_URL` | `http://127.0.0.1:1234` | 目标模型服务的URL |
 | `target_api_key` | `TARGET_API_KEY` | `key` | 目标模型服务的API密钥（建议配置为环境变量） |
 | `target_api_key_header` | `TARGET_API_KEY_HEADER` | `Authorization` | API密钥的请求头名称 |
-| `target_model_config` | `TARGET_MODEL_CONFIG` | 见下方 | 模型的配置参数（可包含温度、最大token等），支持嵌套JSON结构 |
+| `target_model_config` | `TARGET_MODEL_CONFIG` | 空 | 模型的配置参数（可包含温度、最大token等），支持嵌套JSON结构 |
 
 ### 客户端配置
 
@@ -42,8 +44,8 @@
 
 | 配置项 | 环境变量 | 默认值 | 说明 |
 |--------|----------|--------|------|
-| `enable_raw_system_prompt` | `ENABLE_RAW_SYSTEM_PROMPT` | `false` | 是否启用原始系统提示词（建议禁用） |
-| `enable_custom_system_prompt` | `ENABLE_CUSTOM_SYSTEM_PROMPT` | `true` | 是否启用自定义系统提示词（建议启用） |
+| `enable_raw_system_prompt` | `ENABLE_RAW_SYSTEM_PROMPT` | `false` | 是否启用Claude Code原始系统提示词（建议禁用，原始提示词较长，但启用可提高上下文理解能力） |
+| `enable_custom_system_prompt` | `ENABLE_CUSTOM_SYSTEM_PROMPT` | `true` | 是否启用自定义系统提示词（建议启用，以便更好地满足特定需求） |
 | `custom_system_prompt` | `CUSTOM_SYSTEM_PROMPT` | `你是Claude Code。` | 自定义系统提示词 |
 
 ### 工具配置
@@ -53,7 +55,7 @@
 | `enable_tool_selection` | `ENABLE_TOOL_SELECTION` | `false`                                                      | 是否启用工具选择功能           |
 | `tool_selection_base_url` | `TOOL_SELECTION_BASE_URL` | `http://127.0.0.1:1234`                                  | 工具选择模型服务的基础URL           |
 | `tool_selection_api_key` | `TOOL_SELECTION_API_KEY` | `key`                                                      | 工具选择模型服务的API密钥（建议配置为环境变量） |
-| `tool_selection_model_config` | `TOOL_SELECTION_MODEL_CONFIG` | 见下方                                           | 工具选择模型的配置参数（可包含温度、最大token等，建议model配置为与target_model_config中model不同的模型，以避免缓存失效），支持嵌套JSON结构 |
+| `tool_selection_model_config` | `TOOL_SELECTION_MODEL_CONFIG` | 空                                           | 工具选择模型的配置参数（可包含温度、最大token等，建议model配置为与target_model_config中model不同的模型，以避免缓存失效），支持嵌套JSON结构 |
 | `recent_messages_count` | `RECENT_MESSAGES_COUNT` | `5`                                                          | 用于工具选择的最近消息数量     |
 | `max_tools_to_select`   | `MAX_TOOLS_TO_SELECT`   | `3`                                                          | 每次工具选择最多返回的工具数量 |
 | `default_tools`         | `DEFAULT_TOOLS`         | `["Read", "Edit", "Grep"]`                                   | 工具选择失败时使用的默认工具名称列表 |
@@ -196,7 +198,7 @@ host: "0.0.0.0"
 target_base_url: "http://host.docker.internal:1234"
 ```
 
-## 🔒 安全配置
+## 安全配置
 
 ### API密钥管理
 

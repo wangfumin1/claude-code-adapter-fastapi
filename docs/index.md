@@ -1,5 +1,7 @@
 # Claude Code Adapter FastAPI
 
+中文 | [English](/docs/en/index.md)
+
 欢迎使用 Claude Code Adapter FastAPI！这是一个基于 FastAPI 的轻量代理/适配层：将 Anthropic/Claude 的消息与工具调用请求转换为 OpenAI Chat Completions 兼容格式；将工具定义以用户输入的形式追加到对话（而非改写系统提示词），以避免系统提示词缓存失效；支持可选的自动工具选择、SSE 流式转发，以及将目标模型响应回转为 Anthropic 格式。仅提供服务端代理，不侵入客户端 SDK。
 
 ## 🎯 项目概述

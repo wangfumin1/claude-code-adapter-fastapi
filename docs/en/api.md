@@ -1,24 +1,24 @@
-# API文档
+# API Documentation
 
-中文 | [English](/docs/en/api.md)
+[中文](/docs/api.md) | English
 
-本文档详细说明Claude Code Adapter FastAPI的API接口。
+This document provides detailed information about the Claude Code Adapter FastAPI API endpoints.
 
-## 🌐 基础信息
+## 🌐 Basic Information
 
 - **Base URL**: `http://localhost:8000`
-- **API版本**: v1
-- **内容类型**: `application/json`
+- **API Version**: v1
+- **Content Type**: `application/json`
 
-## 📋 端点列表
+## 📋 Endpoint List
 
-### 健康检查
+### Health Check
 
 #### GET /health
 
-检查服务健康状态。
+Checks the health status of the service.
 
-**响应示例**:
+**Response Example**:
 ```json
 {
   "ok": true,
@@ -26,16 +26,16 @@
 }
 ```
 
-**状态码**:
-- `200 OK`: 服务正常
+**Status Codes**:
+- `200 OK`: Service is operational
 
-### 消息代理
+### Message Proxy
 
 #### POST /v1/messages
 
-代理消息请求到目标服务，支持工具调用。
+Proxies message requests to the target service, supporting tool calls.
 
-**请求体**:
+**Request Body**:
 ```json
 {
   "model": "string",
@@ -63,9 +63,9 @@
 }
 ```
 
-**响应示例**:
+**Response Examples**:
 
-**非流式响应**:
+**Non-Streaming Response**:
 ```json
 {
   "id": "msg_1234567890",
@@ -87,7 +87,7 @@
 }
 ```
 
-**工具调用响应**:
+**Tool Call Response**:
 ```json
 {
   "id": "msg_1234567890",
@@ -117,7 +117,7 @@
 }
 ```
 
-**流式响应**:
+**Streaming Response**:
 ```
 data: {"id": "msg_123", "object": "chat.completion.chunk", "choices": [{"delta": {"content": "Hello"}}]}
 
@@ -126,35 +126,35 @@ data: {"id": "msg_123", "object": "chat.completion.chunk", "choices": [{"delta":
 data: [DONE]
 ```
 
-**状态码**:
-- `200 OK`: 请求成功
-- `400 Bad Request`: 请求格式错误
-- `500 Internal Server Error`: 服务器内部错误
-- `502 Bad Gateway`: 目标服务错误
+**Status Codes**:
+- `200 OK`: Request successful
+- `400 Bad Request`: Invalid request format
+- `500 Internal Server Error`: Server error
+- `502 Bad Gateway`: Target service error
 
-## 🔧 工具调用
+## 🔧 Tool Calls
 
-### 工具定义处理策略
+### Tool Definition Handling Strategy
 
-系统根据配置自动选择工具定义的处理方式，以优化性能和功能完整性：
+The system automatically selects the tool definition handling method based on configuration to optimize performance and functionality:
 
-#### 📍 工具定义位置
+#### 📍 Tool Definition Placement
 
-| 配置状态 | 工具定义位置 | 优势 | 适用场景 |
-|---------|-------------|------|---------|
-| `enable_tool_selection: true` | 作为用户消息追加 | 避免系统提示词缓存失效，提高性能 | 动态工具选择、高性能场景 |
-| `enable_tool_selection: false` | 拼接到系统提示词 | 确保模型始终了解所有可用工具，保证功能完整性 | 稳定所有工具支持、传统场景 |
+| Configuration | Tool Definition Location | Advantages | Use Cases |
+|---------------|-------------------------|------------|-----------|
+| `enable_tool_selection: true` | Appended as user message | Avoids system prompt cache invalidation, improves performance | Dynamic tool selection, high-performance scenarios |
+| `enable_tool_selection: false` | Included in system prompt | Ensures model awareness of all available tools, maintains functionality | Stable tool support, traditional scenarios |
 
-#### 🔄 处理流程
+#### 🔄 Processing Workflow
 
-1. **检查配置**: 读取 `enable_tool_selection` 设置
-2. **选择策略**:
-   - `true`: 工具定义 → 用户消息
-   - `false`: 工具定义 → 系统提示词
-3. **格式转换**: 将工具定义转换为相应的提示词格式
-4. **消息构建**: 按选定策略构建最终消息列表
+1. **Check Configuration**: Reads `enable_tool_selection` setting
+2. **Select Strategy**:
+   - `true`: Tool definitions → User messages
+   - `false`: Tool definitions → System prompt
+3. **Format Conversion**: Converts tool definitions to the appropriate prompt format
+4. **Message Construction**: Builds the final message list based on the selected strategy
 
-### 工具定义格式
+### Tool Definition Format
 
 ```json
 {
@@ -177,9 +177,9 @@ data: [DONE]
 }
 ```
 
-### 工具调用格式
+### Tool Call Format
 
-模型响应中的工具调用格式：
+Tool call format in the model response:
 
 ```json
 {
@@ -193,9 +193,9 @@ data: [DONE]
 }
 ```
 
-## 📝 请求示例
+## 📝 Request Examples
 
-### 基本对话
+### Basic Conversation
 
 ```bash
 curl -X POST "http://localhost:8000/v1/messages" \
@@ -211,7 +211,7 @@ curl -X POST "http://localhost:8000/v1/messages" \
   }'
 ```
 
-### 带工具的请求
+### Request with Tools
 
 ```bash
 curl -X POST "http://localhost:8000/v1/messages" \
@@ -243,7 +243,7 @@ curl -X POST "http://localhost:8000/v1/messages" \
   }'
 ```
 
-### 流式请求
+### Streaming Request
 
 ```bash
 curl -X POST "http://localhost:8000/v1/messages" \
@@ -260,11 +260,11 @@ curl -X POST "http://localhost:8000/v1/messages" \
   }'
 ```
 
-## 🔄 消息格式转换
+## 🔄 Message Format Conversion
 
 ### Anthropic → OpenAI
 
-**输入 (Anthropic格式)**:
+**Input (Anthropic Format)**:
 ```json
 {
   "model": "claude-3-sonnet",
@@ -284,9 +284,9 @@ curl -X POST "http://localhost:8000/v1/messages" \
 }
 ```
 
-**转换后 (OpenAI格式)**:
+**Converted (OpenAI Format)**:
 
-*未启用工具选择时 (enable_tool_selection: false)*:
+*When tool selection is disabled (enable_tool_selection: false)*:
 ```json
 {
   "model": "claude-3-sonnet",
@@ -303,7 +303,7 @@ curl -X POST "http://localhost:8000/v1/messages" \
 }
 ```
 
-*启用工具选择时 (enable_tool_selection: true)*:
+*When tool selection is enabled (enable_tool_selection: true)*:
 ```json
 {
   "model": "claude-3-sonnet",
@@ -326,7 +326,7 @@ curl -X POST "http://localhost:8000/v1/messages" \
 
 ### OpenAI → Anthropic
 
-**输入 (OpenAI响应)**:
+**Input (OpenAI Response)**:
 ```json
 {
   "choices": [
@@ -339,7 +339,7 @@ curl -X POST "http://localhost:8000/v1/messages" \
 }
 ```
 
-**转换后 (Anthropic格式)**:
+**Converted (Anthropic Format)**:
 ```json
 {
   "content": [
@@ -360,9 +360,9 @@ curl -X POST "http://localhost:8000/v1/messages" \
 }
 ```
 
-## 🚨 错误处理
+## 🚨 Error Handling
 
-### 错误响应格式
+### Error Response Format
 
 ```json
 {
@@ -370,15 +370,15 @@ curl -X POST "http://localhost:8000/v1/messages" \
 }
 ```
 
-### 常见错误
+### Common Errors
 
-| 状态码 | 错误类型 | 说明 |
-|--------|----------|------|
-| 400 | Bad Request | 请求格式错误 |
-| 500 | Internal Server Error | 服务器内部错误 |
-| 502 | Bad Gateway | 目标服务不可用 |
+| Status Code | Error Type | Description |
+|-------------|------------|-------------|
+| 400 | Bad Request | Invalid request format |
+| 500 | Internal Server Error | Server internal error |
+| 502 | Bad Gateway | Target service unavailable |
 
-### 错误示例
+### Error Examples
 
 ```json
 {
@@ -392,41 +392,41 @@ curl -X POST "http://localhost:8000/v1/messages" \
 }
 ```
 
-## 📊 性能指标
+## 📊 Performance Metrics
 
-### 响应时间
+### Response Times
 
-- **健康检查**: < 10ms
-- **简单对话**: < 100ms
-- **工具调用**: < 200ms
+- **Health Check**: < 10ms
+- **Simple Conversation**: < 100ms
+- **Tool Calls**: < 200ms
 
-### 并发支持
+### Concurrency Support
 
-- **最大并发连接**: 1000
-- **推荐并发连接**: 100
+- **Maximum Concurrent Connections**: 1000
+- **Recommended Concurrent Connections**: 100
 
-## 🔐 安全考虑
+## 🔐 Security Considerations
 
-### API密钥
+### API Key
 
-- 通过环境变量或配置文件设置
-- 不要在请求中明文传输
-- 定期轮换密钥
+- Set via environment variables or configuration file
+- Do not transmit in plaintext in requests
+- Rotate keys regularly
 
-### 请求限制
+### Request Limits
 
-- 建议实施速率限制
-- 监控异常请求
-- 记录访问日志
+- Implement rate limiting
+- Monitor abnormal requests
+- Log access activities
 
-## 📚 更多资源
+## 📚 Additional Resources
 
-- [FastAPI文档](https://fastapi.tiangolo.com/)
-- [OpenAI API文档](https://platform.openai.com/docs/api-reference)
-- [Anthropic API文档](https://docs.anthropic.com/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [OpenAI API Documentation](https://platform.openai.com/docs/api-reference)
+- [Anthropic API Documentation](https://docs.anthropic.com/)
 
-## 🔗 相关文档
+## 🔗 Related Documentation
 
-- [🚀 快速开始指南](getting-started.md) - 安装和基本使用
-- [⚙️ 配置说明](configuration.md) - 详细配置选项
-- [🛠️ 开发指南](development.md) - 开发和调试指南
+- [🚀 Quick Start Guide](getting-started.md) - Installation and basic usage
+- [⚙️ Configuration Guide](configuration.md) - Detailed configuration options
+- [🛠️ Development Guide](development.md) - Development and debugging guide

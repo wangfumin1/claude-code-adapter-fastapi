@@ -146,3 +146,6 @@ Thumbs.db
 # Project specific
 config.local.yaml
 *.log
+
+# Python Poetry
+poetry.lock
