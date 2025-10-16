@@ -51,5 +51,5 @@
 - **安全**: 安全相关的修复
 
 ### 链接格式
-- [版本号]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.0...v1.1.0
+- [版本号]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.0...v1.0.1
 - [未发布]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.0...HEAD
