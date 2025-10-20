@@ -151,7 +151,7 @@ export HOST="0.0.0.0"
 export PORT="8000"
 
 # 重要：客户端配置
-# 在客户端（如Claude Code）中需要将ANTHROPIC_BASE_URL指向本服务地址
+# 在客户端需要将ANTHROPIC_BASE_URL指向本服务地址
 export ANTHROPIC_BASE_URL="http://localhost:8000"
 ```
 

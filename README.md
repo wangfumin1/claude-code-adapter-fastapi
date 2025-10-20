@@ -54,7 +54,7 @@ python -m uvicorn src.claude_code_adapter.app:app --host 0.0.0.0 --port 8000
 
 ### 客户端配置
 
-**重要**：在客户端（如Claude Code）中需要配置环境变量ANTHROPIC_BASE_URL指向本服务地址：
+**重要**：在客户端需要配置环境变量ANTHROPIC_BASE_URL，让Claude Code指向本服务地址：
 
 ```bash
 export ANTHROPIC_BASE_URL="http://localhost:8000"

@@ -157,7 +157,7 @@ python -m uvicorn src.claude_code_adapter.app:app --host 0.0.0.0 --port 8000 --r
 
 ## 📝 代码贡献
 
-> 💡 **快速贡献指南**: 查看 [CONTRIBUTING.md](../../CONTRIBUTING.md) 获取简洁的贡献流程和规范。
+> 💡 **快速贡献指南**: 查看 [CONTRIBUTING.md](/CONTRIBUTING.md) 获取简洁的贡献流程和规范。
 
 ### 详细贡献流程
 
@@ -330,7 +330,7 @@ make docs-build
 - [🚀 快速开始指南](getting-started.md) - 安装和基本使用
 - [⚙️ 配置说明](configuration.md) - 详细配置选项
 - [📚 API文档](api.md) - API接口参考
-- [🤝 贡献指南](../../CONTRIBUTING.md) - 简洁的贡献流程和规范
+- [🤝 贡献指南](/CONTRIBUTING.md) - 简洁的贡献流程和规范
 
 ## 🔄 版本管理
 

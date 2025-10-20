@@ -157,7 +157,7 @@ The development server supports hot reloading, automatically restarting on code 
 
 ## 📝 Code Contribution
 
-> 💡 **Quick Contribution Guide**: See [CONTRIBUTING.md](../../CONTRIBUTING.md) for a concise contribution process and guidelines.
+> 💡 **Quick Contribution Guide**: See [CONTRIBUTING.md](/docs/en/CONTRIBUTING.md) for a concise contribution process and guidelines.
 
 ### Detailed Contribution Process
 
@@ -330,7 +330,7 @@ make docs-build
 - [🚀 Quick Start Guide](getting-started.md) - Installation and basic usage
 - [⚙️ Configuration Guide](configuration.md) - Detailed configuration options
 - [📚 API Documentation](api.md) - API reference
-- [🤝 Contribution Guidelines](../../CONTRIBUTING.md) - Concise contribution process and guidelines
+- [🤝 Contribution Guidelines](/CONTRIBUTING.md) - Concise contribution process and guidelines
 
 ## 🔄 Version Management
 

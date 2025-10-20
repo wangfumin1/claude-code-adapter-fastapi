@@ -29,7 +29,7 @@
 
 | 环境变量 | 说明 | 示例值 |
 |----------|------|--------|
-| `ANTHROPIC_BASE_URL` | **重要**：在客户端（如Claude Code）中需要配置此环境变量，指向本服务地址 | `http://localhost:8000` |
+| `ANTHROPIC_BASE_URL` | **重要**：在客户端需要配置此环境变量，让Claude Code指向本服务地址 | `http://localhost:8000` |
 
 ### 服务配置
 
@@ -52,7 +52,7 @@
 
 | 配置项                  | 环境变量                | 默认值                                                       | 说明                           |
 | ----------------------- | ----------------------- | ------------------------------------------------------------ | ------------------------------ |
-| `enable_tool_selection` | `ENABLE_TOOL_SELECTION` | `false`                                                      | 是否启用工具选择功能           |
+| `enable_tool_selection` | `ENABLE_TOOL_SELECTION` | `false`                                                      | 是否启用工具选择功能（建议短上下文模型启用） |
 | `tool_selection_base_url` | `TOOL_SELECTION_BASE_URL` | `http://127.0.0.1:1234`                                  | 工具选择模型服务的基础URL           |
 | `tool_selection_api_key` | `TOOL_SELECTION_API_KEY` | `key`                                                      | 工具选择模型服务的API密钥（建议配置为环境变量） |
 | `tool_selection_model_config` | `TOOL_SELECTION_MODEL_CONFIG` | 空                                           | 工具选择模型的配置参数（可包含温度、最大token等，建议model配置为与target_model_config中model不同的模型，以避免缓存失效），支持嵌套JSON结构 |
@@ -68,12 +68,12 @@
 系统根据 `enable_tool_selection` 配置自动选择工具定义的处理方式：
 
 #### 🔧 启用工具选择时 (`enable_tool_selection: true`)
-- **处理方式**: 工具定义作为用户消息追加到消息列表
+- **处理方式**: 将所选的工具定义作为用户消息追加到消息列表
 - **优势**: 避免系统提示词缓存失效，提高性能
 - **适用场景**: 需要动态工具选择的高性能场景
 
 #### 📝 未启用工具选择时 (`enable_tool_selection: false`)
-- **处理方式**: 工具定义拼接到系统提示词中
+- **处理方式**: 将全部的工具定义拼接到系统提示词中
 - **优势**: 确保模型始终了解可用工具，保证功能完整性
 - **适用场景**: 需要稳定工具支持的场景
 
@@ -132,19 +132,15 @@ tool_selection_prompt: |
 tool_use_prompt: |
   You have access to the following tools. The available tools are defined in JSON format below:
 
-  ```json
   {tools_json}
-  ```
 
   When you need to use a tool, respond with JSON in this exact format:
-  ```json
   {
     "type": "tool_use",
     "id": "call_123",
     "name": "ToolName",
     "input": {"param": "value"}
   }
-  ```
 
   Use the tools to help complete the user's request.
 ```
