@@ -2,16 +2,18 @@
 
 [中文](/docs/index.md) | English
 
-Welcome to Claude Code Adapter FastAPI! This is a lightweight proxy/adapter layer based on FastAPI that converts Anthropic/Claude messages and tool call requests to OpenAI Chat Completions compatible format; appends tool definitions as user inputs (instead of modifying system prompts) to avoid system prompt cache invalidation; supports optional automatic tool selection, SSE streaming forwarding, and response conversion back to Anthropic format. It provides server-side proxying without modifying client SDKs.
+A lightweight proxy/adapter layer based on FastAPI: Converts Anthropic/Claude messages and tool call requests to OpenAI Chat Completions compatible format; intelligently selects tool definition handling strategy (system prompt vs. user message) to optimize performance and functionality; supports optional automatic tool selection, SSE streaming forwarding, and response conversion back to Anthropic format. Provides server-side proxying without modifying client SDKs.
 
 ## 🎯 Project Overview
 
 Key features include:
 
-- **Tool Prompt Appending (User)**: Appends tool definitions as user inputs to avoid system prompt cache invalidation
-- **Format Adaptation**: Bidirectional conversion between Anthropic and OpenAI message and tool call formats
-- **Automatic Tool Selection (Optional)**: Intelligently selects tools from the tool list based on recent conversation context
-- **Proxy Forwarding**: Supports both non-streaming and SSE streaming forwarding to target services
+- 🔧 **Smart Tool Definition Handling**: Automatically selects tool definition placement (system prompt vs. user message) based on configuration to optimize performance and functionality.
+- 🔄 **Format Adaptation**: Bidirectional conversion between Anthropic and OpenAI message and tool call formats.
+- 🧠 **Automatic Tool Selection (Optional)**: Intelligently selects tools from the tool list based on recent conversation context.
+- 📡 **Proxy Forwarding**: Supports both non-streaming and SSE streaming forwarding to target services.
+- ⚙️ **Flexible Configuration**: YAML configuration with environment variable overrides and hot-reload support.
+- 🐳 **Docker Deployment**: Start with a single command.
 
 ## 🚀 Quick Start
 
