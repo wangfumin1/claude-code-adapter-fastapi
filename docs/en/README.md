@@ -55,6 +55,7 @@ Visit http://localhost:8000/docs to view the API documentation.
 ### Client Configuration
 
 **Important**: In the client, configure the environment variable ANTHROPIC_BASE_URL to point to this service:
+
 ```bash
 export ANTHROPIC_BASE_URL="http://localhost:8000"
 ```
