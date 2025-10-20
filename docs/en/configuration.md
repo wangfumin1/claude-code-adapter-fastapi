@@ -133,12 +133,14 @@ tool_use_prompt: |
   {tools_json}
 
   When you need to use a tool, respond with JSON in this exact format:
+
   {
     "type": "tool_use",
     "id": "call_123",
     "name": "ToolName",
     "input": {"param": "value"}
   }
+
 
   Use the tools to help complete the user's request.
 ```
