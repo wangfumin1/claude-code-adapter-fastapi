@@ -150,7 +150,7 @@ export HOST="0.0.0.0"
 export PORT="8000"
 
 # Important: Client configuration
-# In the client (e.g., Claude Code), set ANTHROPIC_BASE_URL to point to this service
+# In the client, set ANTHROPIC_BASE_URL to point to this service
 export ANTHROPIC_BASE_URL="http://localhost:8000"
 ```
 

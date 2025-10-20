@@ -29,7 +29,7 @@ The project supports multiple configuration methods, prioritized as follows:
 
 | Environment Variable | Description | Example Value |
 |---------------------|-------------|---------------|
-| `ANTHROPIC_BASE_URL` | **Important**: In the client (e.g., Claude Code), configure this environment variable to point to this service's address | `http://localhost:8000` |
+| `ANTHROPIC_BASE_URL` | **Important**: In the client, configure this environment variable to point to this service's address | `http://localhost:8000` |
 
 ### Service Configuration
 
@@ -130,19 +130,15 @@ tool_selection_prompt: |
 tool_use_prompt: |
   You have access to the following tools. The available tools are defined in JSON format below:
 
-  ```json
   {tools_json}
-  ```
 
   When you need to use a tool, respond with JSON in this exact format:
-  ```json
   {
     "type": "tool_use",
     "id": "call_123",
     "name": "ToolName",
     "input": {"param": "value"}
   }
-  ```
 
   Use the tools to help complete the user's request.
 ```
