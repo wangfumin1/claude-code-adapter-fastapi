@@ -1,6 +1,6 @@
 # Configuration Guide
 
-[中文](/docs/configuration.md) | English
+[中文](../configuration.md) | English
 
 This document details all configuration options for Claude Code Adapter FastAPI.
 
