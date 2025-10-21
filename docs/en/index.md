@@ -1,6 +1,6 @@
 # Claude Code Adapter FastAPI
 
-[中文](/docs/index.md) | English
+[中文](../index.md) | English
 
 A lightweight proxy/adapter layer based on FastAPI: Converts Anthropic/Claude messages and tool call requests to OpenAI Chat Completions compatible format; intelligently selects tool definition handling strategy (system prompt vs. user message) to optimize performance and functionality; supports optional automatic tool selection, SSE streaming forwarding, and response conversion back to Anthropic format. Provides server-side proxying without modifying client SDKs.
 
