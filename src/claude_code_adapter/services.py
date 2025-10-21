@@ -13,6 +13,8 @@ from .config import settings
 from .utils import (
     convert_tools_to_prompt,
     flatten_content,
+    get_structured_config,
+    is_multimodal_model,
     parse_tool_calls_from_response,
 )
 
@@ -29,6 +31,7 @@ class MessageConverter:
         self, body: Dict[str, Any]
     ) -> List[Dict[str, Any]]:
         """将Anthropic格式消息转换为OpenAI格式"""
+        logger.setLevel(settings.log_level)
         out: List[Dict[str, Any]] = []
 
         # 构建系统提示词
@@ -63,12 +66,23 @@ class MessageConverter:
 
         # 处理对话消息
         msgs = body.get("messages") or []
-        for m in msgs:
-            role = m.get("role", "user")
-            content = m.get("content")
-            text = flatten_content(content)
-            if text:
-                out.append({"role": role, "content": text})
+        if not is_multimodal_model(body.get("model", "")):
+            logger.info("目标模型不支持多模态结构化内容，降级为纯文本处理")
+            for m in msgs:
+                role = m.get("role", "user")
+                content = m.get("content")
+                text = flatten_content(content)
+                if text:
+                    out.append({"role": role, "content": text})
+        else:
+            logger.info("目标模型支持多模态结构化内容，进行结构化内容转换")
+            for m in msgs:
+                role = m.get("role", "user")
+                content = m.get("content")
+                converted_content = self.convert_claude_structured(
+                    content, get_structured_config(body.get("model", ""))
+                )
+                out.append({"role": role, "content": converted_content})
 
         # 如果启用了工具选择，将工具定义作为用户消息追加
         if settings.enable_tool_selection:
@@ -76,8 +90,91 @@ class MessageConverter:
             if tools:
                 tool_prompt = convert_tools_to_prompt(tools, self.tool_use_prompt)
                 out.append({"role": "user", "content": tool_prompt})
-
+        logger.debug(f"转换后的OpenAI消息: {out}")
         return out
+
+    def convert_claude_structured(self, content: Any, cfg: Dict) -> Any:
+        """通用转换器：Claude结构 → 目标模型结构（含 image/audio/video）"""
+        if content is None:
+            return ""
+
+        if not cfg:
+            # 未匹配模型 → 降级为纯文本
+            if isinstance(content, dict):
+                logger.debug("未找到模型配置，降级为JSON字符串")
+                return content.get("text", json.dumps(content, ensure_ascii=False))
+            if isinstance(content, list):
+                logger.debug("未找到模型配置，按列表处理")
+                return [self.convert_claude_structured(c, cfg) for c in content]
+            logger.debug("未找到模型配置，降级为字符串")
+            return str(content)
+
+        ctype_map = cfg.get("content_types", {})
+
+        # === 文本 ===
+        if isinstance(content, dict) and content.get("type") == "text":
+            text_cfg = ctype_map.get("text", {"type": "text"})
+            return {"type": text_cfg["type"], "text": content.get("text", "")}
+
+        # === 通用媒体类型转换函数 ===
+        def convert_media(media_type: str) -> Dict[str, Any]:
+            logger.debug(
+                f"{media_type.capitalize()}内容转换，使用配置: {ctype_map.get(media_type)}"
+            )
+            src = content.get("source", {})
+            base64_data = src.get("data")
+            mime = src.get("media_type", f"{media_type}/*")
+            media_cfg = ctype_map.get(media_type)
+            if not media_cfg:
+                return {
+                    "type": "text",
+                    "text": f"[{media_type.capitalize()} not supported by model]",
+                }
+
+            # URL 形式（最常见）
+            if "url_key" in media_cfg:
+                key = media_cfg["url_key"]
+                return {
+                    "type": media_cfg["type"],
+                    media_cfg["type"]: {key: f"data:{mime};base64,{base64_data}"},
+                }
+
+            # 源结构（如 Claude 自身格式）
+            if "source" in media_cfg:
+                src_cfg = media_cfg["source"]
+                return {
+                    "type": media_cfg["type"],
+                    "source": {
+                        "type": src_cfg.get("type", "base64"),
+                        "media_type": mime,
+                        src_cfg.get("data_key", "data"): base64_data,
+                    },
+                }
+
+            return {
+                "type": "text",
+                "text": f"[{media_type.capitalize()} conversion failed]",
+            }
+
+        # === 图片 ===
+        if isinstance(content, dict) and content.get("type") == "image":
+            return convert_media("image")
+
+        # === 音频 ===
+        if isinstance(content, dict) and content.get("type") == "audio":
+            return convert_media("audio")
+
+        # === 视频 ===
+        if isinstance(content, dict) and content.get("type") == "video":
+            return convert_media("video")
+
+        # === 列表递归 ===
+        if isinstance(content, list):
+            return [self.convert_claude_structured(c, cfg) for c in content]
+
+        logger.warning(f"未知内容类型，降级为字符串: {content}")
+        # 其他 → 转字符串
+        return str(content)
 
 
 class OpenAIClient:
@@ -98,6 +195,7 @@ class ResponseProcessor:
         self, lm_resp: Dict[str, Any], target_model: str
     ) -> Dict[str, Any]:
         """处理模型响应，转换为Anthropic格式"""
+        logger.setLevel(settings.log_level)
         content_blocks = []
 
         logger.debug(f"原始响应内容: {lm_resp}")

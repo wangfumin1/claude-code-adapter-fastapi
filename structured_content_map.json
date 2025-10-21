@@ -1,0 +1,113 @@
+{
+  "gpt-4o": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "image_url"},
+      "audio": {"type": "audio_url", "url_key": "audio_url"},
+      "video": {"type": "video_url", "url_key": "video_url"}
+    }
+  },
+  "gpt-4o-mini": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "image_url"}
+    }
+  },
+  "gemini-1.5-pro": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"},
+      "audio": {"type": "audio_url", "url_key": "url"},
+      "video": {"type": "video_url", "url_key": "url"}
+    }
+  },
+  "gemini-1.5-flash": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "gemini-2.5-pro": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"},
+      "audio": {"type": "audio_url", "url_key": "url"},
+      "video": {"type": "video_url", "url_key": "url"}
+    }
+  },
+  "qwen-vl": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"},
+      "video": {"type": "video_url", "url_key": "url"}
+    }
+  },
+  "qwen2-vl-max": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"},
+      "video": {"type": "video_url", "url_key": "url"}
+    }
+  },
+  "qwen2.5-vl": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "qwen3-vl": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"},
+      "video": {"type": "video_url", "url_key": "url"}
+    }
+  },
+  "qvq-max": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "glm-4v": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "yi-vl": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "pixtral-12b": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "baichuan2-vl": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "llama-4-scout": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "llama-4-maverick": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  },
+  "internvl3-78b": {
+    "content_types": {
+      "text": {"type": "text"},
+      "image": {"type": "image_url", "url_key": "url"}
+    }
+  }
+}

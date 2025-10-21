@@ -6,7 +6,10 @@ import json
 import logging
 import re
 import time
-from typing import Any, Dict, List, Tuple
+from pathlib import Path
+from typing import Any, Dict, List, Tuple, cast
+
+from .config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -118,6 +121,7 @@ def remove_json_objects(text: str, objects: List[Tuple[str, int, int]]) -> str:
 
 def parse_tool_calls_from_response(content: str) -> Tuple[List[Dict[str, Any]], str]:
     """解析工具调用，并返回 (tool_calls, clean_content)"""
+    logger.setLevel(settings.log_level)
     tool_calls = []
     clean_content = content
 
@@ -232,3 +236,45 @@ def build_chat_completion_args(params: dict) -> dict:
             args[key] = val
 
     return args
+
+
+# 结构化内容模型配置文件路径
+CONFIG_PATH = Path("structured_content_map.json")
+
+
+# 加载模型映射配置
+def load_model_map() -> dict[str, Any]:
+    if CONFIG_PATH.exists():
+        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+            return cast(dict[str, Any], json.load(f))
+    return {}
+
+
+# 获取指定模型的结构化内容配置
+def get_structured_config(model_name: str) -> dict[str, Any]:
+    """获取指定模型的结构化内容配置，支持前缀匹配"""
+    logger.setLevel(settings.log_level)
+    model_map = load_model_map()
+    name = model_name.lower()
+
+    # 1. 精确匹配
+    if name in model_map:
+        logger.debug(f"模型 '{model_name}' 精确匹配到配置")
+        return cast(dict[str, Any], model_map[name])
+
+    # 2. 前缀匹配（最长匹配优先）
+    matches = [cfg for key, cfg in model_map.items() if name.startswith(key)]
+    if matches:
+        # 可按匹配长度排序，选择最“长前缀”匹配项
+        best_key = max((k for k in model_map.keys() if name.startswith(k)), key=len)
+        logger.debug(f"模型 '{model_name}' 前缀匹配到配置: '{best_key}'")
+        return cast(dict[str, Any], model_map[best_key])
+
+    logger.debug(f"未找到模型 '{model_name}' 的结构化内容配置")
+    # 3. 未匹配到，返回空配置
+    return {}
+
+
+# 判断模型是否支持多模态结构化内容
+def is_multimodal_model(model_name: str) -> bool:
+    return get_structured_config(model_name) != {}
