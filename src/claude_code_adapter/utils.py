@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def flatten_content(content: Any) -> Any:
-    """将复杂内容结构扁平化为字符串"""
+    """将复杂内容结构扁平化为字符串，仅支持文本和工具调用结果类型"""
     if content is None:
         return ""
     if isinstance(content, str):
@@ -37,13 +37,15 @@ def flatten_content(content: Any) -> Any:
             else:
                 result_text = str(result_content)
             return f"Tool {tool_id} result: {result_text}"
-        return json.dumps(content, ensure_ascii=False)
+        # 其他类型的内容暂不处理，返回空字符串，避免LLM无法理解的内容浪费token
+        return ""
     if isinstance(content, list):
         parts = []
         for p in content:
             parts.append(flatten_content(p))
         return "\n".join([p for p in parts if p])
-    return str(content)
+    # 其他类型的内容暂不处理，返回空字符串，避免LLM无法理解的内容浪费token
+    return ""
 
 
 def convert_tools_to_prompt(tools: List[Dict[str, Any]], template: str) -> str:

@@ -119,10 +119,6 @@ default_tools:
 tool_selection_prompt: |
   Select up to {max_tools} tools from 'Available tools' that best match the user's needs based on recent messages. Only use tool names from 'Available tools', not from messages. Choose tools proactively if they seem relevant. Return a JSON array of tool names, or [] if no tools apply.
 
-  Recent messages: [
-  {recent_messages}
-  ]
-
   Available tools: [
   {tools_list}
   ]

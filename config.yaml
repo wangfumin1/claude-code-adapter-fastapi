@@ -34,15 +34,18 @@ default_tools:
   - Edit
   - Grep
 tool_selection_prompt: |
-  Select up to {max_tools} tools from 'Available tools' that best match the user's needs based on recent messages. Only use tool names from 'Available tools', not from messages. Choose tools proactively if they seem relevant. Return a JSON array of tool names, or [] if no tools apply.
+  Based on the user's recent messages, select up to {max_tools} tools from 'Available tools' that could be useful or relevant, even indirectly.
 
-  Recent messages: [
-  {recent_messages}
-  ]
+  Prefer including more potentially helpful tools rather than fewer.
 
-  Available tools: [
-  {tools_list}
-  ]
+  Choose tools proactively based on context, likely next steps, or related actions.
+  Only use names from 'Available tools'.
+
+  Return a JSON array of tool names, or [] if no tools apply.
+
+  Available tools:
+  [{tools_list}]
+
 tool_use_prompt: |
   You have access to the following tools. The available tools are defined in JSON format below:
 
