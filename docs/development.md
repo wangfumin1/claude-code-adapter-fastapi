@@ -1,6 +1,6 @@
 # 开发指南
 
-中文 | [English](/docs/en/development.md)
+中文 | [English](./en/development.md)
 
 本文档为开发者提供详细的开发环境设置、代码结构和贡献指南。
 

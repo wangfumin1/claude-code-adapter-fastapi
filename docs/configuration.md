@@ -1,6 +1,6 @@
 # 配置说明
 
-中文 | [English](/docs/en/configuration.md)
+中文 | [English](./en/configuration.md)
 
 本文档详细说明Claude Code Adapter FastAPI的所有配置选项。
 

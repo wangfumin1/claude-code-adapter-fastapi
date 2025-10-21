@@ -1,6 +1,6 @@
 # Detailed Installation Guide
 
-[中文](/docs/getting-started.md) | English
+[中文](../getting-started.md) | English
 
 This guide provides detailed instructions for installing and configuring Claude Code Adapter FastAPI.
 

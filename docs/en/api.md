@@ -1,6 +1,6 @@
 # API Documentation
 
-[中文](/docs/api.md) | English
+[中文](../api.md) | English
 
 This document provides detailed information about the Claude Code Adapter FastAPI API endpoints.
 

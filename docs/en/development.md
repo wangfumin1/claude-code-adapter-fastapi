@@ -1,6 +1,6 @@
 # Development Guide
 
-[中文](/docs/development.md) | English
+[中文](../development.md) | English
 
 This document provides detailed instructions for setting up the development environment, project structure, and contribution guidelines for developers.
 

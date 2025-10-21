@@ -1,6 +1,6 @@
 # API文档
 
-中文 | [English](/docs/en/api.md)
+中文 | [English](./en/api.md)
 
 本文档详细说明Claude Code Adapter FastAPI的API接口。
 
