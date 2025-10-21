@@ -5,16 +5,18 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 项目遵循 [语义化版本](https://semver.org/spec/v2.0.0.html)。
 
-## [1.0.1] - 2025-10-16
+## [1.0.2] - 2025-10-16
 
 ### 新增
-- 英文版本文档
+- 添加多模态内容支持，更新消息转换逻辑和结构化内容配置
 
 ### 修复
-- 修复部分配置项不能自动重载的问题
-- 补充对poetry.lock文件的忽略
+- 修改ANTHROPIC_BASE_URL配置说明
+- 修复CONTRIBUTING文档路径
+- 修复配置文件示例格式错误
 
 ### 功能特性
+- 🖼️ 多模态内容支持
 - 🔧 工具提示词适配
 - 🚀 FastAPI框架
 - ⚙️ 灵活配置
@@ -51,5 +53,5 @@
 - **安全**: 安全相关的修复
 
 ### 链接格式
-- [版本号]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.0...v1.0.1
-- [未发布]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.0...HEAD
+- [版本号]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.1...v1.0.2
+- [未发布]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.1...HEAD

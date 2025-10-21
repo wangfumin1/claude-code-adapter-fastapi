@@ -10,6 +10,7 @@ Key features include:
 
 - 🔧 **Smart Tool Definition Handling**: Automatically selects tool definition placement (system prompt vs. user message) based on configuration to optimize performance and functionality.
 - 🔄 **Format Adaptation**: Bidirectional conversion between Anthropic and OpenAI message and tool call formats.
+- 🖼️ **Multimodal Content Support**: Automatically converts multimodal message content based on structured content model mapping to support multimodal models.
 - 🧠 **Automatic Tool Selection (Optional)**: Intelligently selects tools from the tool list based on recent conversation context.
 - 📡 **Proxy Forwarding**: Supports both non-streaming and SSE streaming forwarding to target services.
 - ⚙️ **Flexible Configuration**: YAML configuration with environment variable overrides and hot-reload support.

@@ -29,7 +29,7 @@ app = FastAPI(
       OpenAI Chat Completions 兼容格式；智能选择工具定义处理策略（系统提示词 vs 用户消息），
       根据配置自动优化性能和功能完整性；支持可选的自动工具选择、SSE 流式转发，
       以及将目标模型响应回转为 Anthropic 格式。仅提供服务端代理，不侵入客户端 SDK。""",
-    version="1.0.1",
+    version="1.0.2",
 )
 
 
