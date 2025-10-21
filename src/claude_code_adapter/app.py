@@ -20,20 +20,16 @@ from .services import (
 from .utils import flatten_content
 
 # 配置日志
-logging.basicConfig(
-    level=getattr(logging, settings.log_level.upper()),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
 logger = logging.getLogger(__name__)
 
 # 创建FastAPI应用
 app = FastAPI(
-    title="Claude Code Tool Prompt Adapter",
+    title="Claude Code Adapter",
     description="""一个基于 FastAPI 的轻量代理/适配层：将 Anthropic/Claude 的消息与工具调用请求转换为
       OpenAI Chat Completions 兼容格式；智能选择工具定义处理策略（系统提示词 vs 用户消息），
       根据配置自动优化性能和功能完整性；支持可选的自动工具选择、SSE 流式转发，
       以及将目标模型响应回转为 Anthropic 格式。仅提供服务端代理，不侵入客户端 SDK。""",
-    version="1.0.1",
+    version="1.0.2",
 )
 
 
@@ -62,9 +58,14 @@ async def global_exception_handler(request: Request, exc: Exception) -> JSONResp
 @app.post("/v1/messages")
 async def proxy_messages(request: Request) -> Any:
     """代理消息请求到目标服务"""
+    # 重新初始化以应用新的配置
+    config_manager.reload()
+    settings = config_manager.settings
+    logger.setLevel(getattr(logging, settings.log_level.upper()))
+
     try:
         body = await request.json()
-        logger.debug(f"收到请求体: {body}")
+        # logger.debug(f"收到请求体: {body}")
     except Exception:
         logger.exception("解析请求体失败")
         raise HTTPException(status_code=400, detail="无效的JSON")
@@ -74,11 +75,7 @@ async def proxy_messages(request: Request) -> Any:
         raise HTTPException(status_code=400, detail="messages 不能为空")
     if not isinstance(messages, list):
         raise HTTPException(status_code=400, detail="messages 必须是一个列表")
-
     try:
-        # 重新初始化以应用新的配置
-        config_manager.reload()
-        settings = config_manager.settings
 
         tools = body.get("tools") or []
         tool_choice = body.get("tool_choice")
@@ -105,15 +102,15 @@ async def proxy_messages(request: Request) -> Any:
             else:
                 logger.info("无工具可用")
 
-        # 转换消息格式
-        openai_messages = message_converter.convert_anthropic_to_openai_messages(body)
-
         payload = settings.target_model_config
         payload["model"] = payload["model"] if payload["model"] else body.get("model")
-        payload["messages"] = openai_messages
-
         stream_mode = bool(body.get("stream"))
         payload["stream"] = stream_mode
+        body["model"] = payload["model"]
+
+        # 转换消息格式
+        openai_messages = message_converter.convert_anthropic_to_openai_messages(body)
+        payload["messages"] = openai_messages
         url = settings.target_base_url
         key = settings.target_api_key
         # 记录实际调用目标
