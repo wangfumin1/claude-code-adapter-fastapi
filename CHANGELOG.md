@@ -5,7 +5,7 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 项目遵循 [语义化版本](https://semver.org/spec/v2.0.0.html)。
 
-## [1.0.2] - 2025-10-16
+## [1.0.2] - 2025-10-21
 
 ### 新增
 - 添加多模态内容支持，更新消息转换逻辑和结构化内容配置
