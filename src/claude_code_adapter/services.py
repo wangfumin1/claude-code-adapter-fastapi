@@ -66,23 +66,7 @@ class MessageConverter:
 
         # 处理对话消息
         msgs = body.get("messages") or []
-        if not is_multimodal_model(body.get("model", "")):
-            logger.info("目标模型不支持多模态结构化内容，降级为纯文本处理")
-            for m in msgs:
-                role = m.get("role", "user")
-                content = m.get("content")
-                text = flatten_content(content)
-                if text:
-                    out.append({"role": role, "content": text})
-        else:
-            logger.info("目标模型支持多模态结构化内容，进行结构化内容转换")
-            for m in msgs:
-                role = m.get("role", "user")
-                content = m.get("content")
-                converted_content = self.convert_claude_structured(
-                    content, get_structured_config(body.get("model", ""))
-                )
-                out.append({"role": role, "content": converted_content})
+        out = self.convert_messages(msgs, body.get("model", ""))
 
         # 如果启用了工具选择，将工具定义作为用户消息追加
         if settings.enable_tool_selection:
@@ -175,6 +159,30 @@ class MessageConverter:
         logger.warning(f"未知内容类型，降级为字符串: {content}")
         # 其他 → 转字符串
         return str(content)
+
+    def convert_messages(
+        self, msgs: List[Dict[str, Any]], model: str
+    ) -> List[Dict[str, Any]]:
+        """转换对话消息，处理多模态结构化内容"""
+        out = []
+        if not is_multimodal_model(model):
+            logger.info("目标模型不支持多模态结构化内容，降级为纯文本处理")
+            for m in msgs:
+                role = m.get("role", "user")
+                content = m.get("content")
+                text = flatten_content(content)
+                if text:
+                    out.append({"role": role, "content": text})
+        else:
+            logger.info("目标模型支持多模态结构化内容，进行结构化内容转换")
+            for m in msgs:
+                role = m.get("role", "user")
+                content = m.get("content")
+                converted_content = self.convert_claude_structured(
+                    content, get_structured_config(model)
+                )
+                out.append({"role": role, "content": converted_content})
+        return out
 
 
 class OpenAIClient:

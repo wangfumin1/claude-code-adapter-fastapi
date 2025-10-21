@@ -69,10 +69,6 @@ Only use tool names from 'Available tools', not from messages.
 Choose tools proactively if they seem relevant.
 Return a JSON array of tool names, or [] if no tools apply.
 
-Recent messages: [
-{recent_messages}
-]
-
 Available tools: [
 {tools_list}
 ]""",

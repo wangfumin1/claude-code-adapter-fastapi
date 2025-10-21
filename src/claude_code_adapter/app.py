@@ -17,7 +17,6 @@ from .services import (
     OpenAIClient,
     ResponseProcessor,
 )
-from .utils import flatten_content
 
 # 配置日志
 logger = logging.getLogger(__name__)
@@ -176,20 +175,21 @@ async def select_tools(
     )
 
     # 构建最近消息列表
-    recent_str = "\n\n".join(
-        f"{{{m['role']}: '{flatten_content(m['content'])}'}}," for m in recent_msgs
+    out_recent_msgs = message_converter.convert_messages(
+        recent_msgs, settings.tool_selection_model_config.get("model", "")
     )
 
     # 格式化提示词
-    user_content = settings.tool_selection_prompt.format(
+    tool_selection_prompt = settings.tool_selection_prompt.format(
         max_tools=settings.max_tools_to_select,
-        recent_messages=recent_str,
         tools_list=tools_list,
     )
-    logger.debug(f"工具选择提示词: {user_content}")
+    logger.debug(f"工具选择提示词: {tool_selection_prompt}")
     payload = settings.tool_selection_model_config
     payload["model"] = payload.get("model") if payload.get("model") else target_model
-    payload["messages"] = [{"role": "user", "content": user_content}]
+    payload["messages"] = [
+        {"role": "user", "content": tool_selection_prompt}
+    ] + out_recent_msgs
     payload["stream"] = False
     if not payload["model"]:
         raise ValueError("工具选择模型未配置")
@@ -202,6 +202,7 @@ async def select_tools(
             f"请求地址：{url}，"
             f"模型：{settings.tool_selection_model_config['model']}"
         )
+        logger.debug(f"工具选择请求消息: {payload['messages']}")
         completion = await tool_selection_client.create_completion(url, key, payload)
         response_content = completion.choices[0].message.content.strip()
         logger.info(f"工具选择模型响应: {response_content}")
