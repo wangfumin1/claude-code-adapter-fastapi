@@ -5,15 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 项目遵循 [语义化版本](https://semver.org/spec/v2.0.0.html)。
 
-## [1.1.0] - 2025-10-21
-
-### 新增
-- 添加多模态内容支持，更新消息转换逻辑和结构化内容配置
+## [1.1.1] - 2025-10-22
 
 ### 修复
-- 修改ANTHROPIC_BASE_URL配置说明
-- 修复CONTRIBUTING文档路径
-- 修复配置文件示例格式错误
+- 修正文档中的语言切换链接
+
+## 改进
+- 重构工具选择的消息转换逻辑，支持多模态内容处理并优化提示词格式
+- 优化README文档，添加多模态支持说明和示例
 
 ### 功能特性
 - 🖼️ 多模态内容支持
@@ -53,5 +52,5 @@
 - **安全**: 安全相关的修复
 
 ### 链接格式
-- [版本号]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.1...v1.1.0
-- [未发布]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.0.1...HEAD
+- [版本号]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.1.0...v1.1.1
+- [未发布]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.1.0...HEAD
