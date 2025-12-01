@@ -8,7 +8,7 @@ Currently supported versions for security updates:
 
 | Version | Support Status         |
 |---------|-----------------------|
-| 1.0.x   | ✅ Security updates supported |
+| 1.1.x   | ✅ Security updates supported |
 
 ## Reporting a Vulnerability
 
