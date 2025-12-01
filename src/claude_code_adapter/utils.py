@@ -67,7 +67,9 @@ def extract_json_objects(text: str, mode: str = "object") -> List[Tuple[str, int
     results = []
 
     # 先处理 ```json ... ``` 包裹的情况
-    fenced_matches = list(re.finditer(r"```json\s*([\s\S]*?)```", text, re.MULTILINE))
+    fenced_matches = list(
+        re.finditer(r"```\s*json\s*([\s\S]*?)```", text, re.MULTILINE)
+    )
     for m in fenced_matches:
         json_str = m.group(1).strip()
         results.append((json_str, m.start(), m.end()))
@@ -138,9 +140,14 @@ def parse_tool_calls_from_response(content: str) -> Tuple[List[Dict[str, Any]], 
 
         for idx, (json_str, start, end) in enumerate(json_candidates):
             try:
-                fixed_str = fix_invalid_json(json_str)
-                parsed = json.loads(fixed_str)
+                # 先尝试直接解析
+                try:
+                    parsed = json.loads(json_str)
+                except json.JSONDecodeError:
+                    fixed_str = fix_invalid_json(json_str)
+                    parsed = json.loads(fixed_str)
 
+                # 验证是否是工具调用
                 if (
                     isinstance(parsed, dict)
                     and parsed.get("type") == "tool_use"
@@ -152,19 +159,22 @@ def parse_tool_calls_from_response(content: str) -> Tuple[List[Dict[str, Any]], 
                         "type": "function",
                         "function": {
                             "name": parsed["name"],
-                            "arguments": json.dumps(parsed["input"]),
+                            "arguments": json.dumps(
+                                parsed["input"], ensure_ascii=False
+                            ),
                         },
                     }
                     tool_calls.append(tool_call)
-                    tool_json_segments.append(
-                        (json_str, start, end)
-                    )  # 仅记录工具调用 JSON
+                    # 直接使用原版的移除逻辑
+                    tool_json_segments.append((json_str, start, end))
 
-            except json.JSONDecodeError:
+            except (json.JSONDecodeError, Exception) as e:
+                logger.debug(f"跳过无效 JSON 片段: {e}")
                 continue
 
         # 移除工具调用 JSON 内容，返回干净文本
-        clean_content = remove_json_objects(content, tool_json_segments)
+        if tool_json_segments:
+            clean_content = remove_json_objects(content, tool_json_segments)
 
     except Exception as e:
         logger.warning(f"解析工具调用时出错: {e}")
