@@ -5,14 +5,11 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 项目遵循 [语义化版本](https://semver.org/spec/v2.0.0.html)。
 
-## [1.1.1] - 2025-10-22
+## [1.1.2] - 2025-12-01
 
 ### 修复
-- 修正文档中的语言切换链接
-
-## 改进
-- 重构工具选择的消息转换逻辑，支持多模态内容处理并优化提示词格式
-- 优化README文档，添加多模态支持说明和示例
+- 修正配置文件中的默认工具列表说明
+- 修正提取 JSON 对象的正则表达式并优化工具调用解析逻辑
 
 ### 功能特性
 - 🖼️ 多模态内容支持
@@ -52,5 +49,5 @@
 - **安全**: 安全相关的修复
 
 ### 链接格式
-- [版本号]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.1.0...v1.1.1
-- [未发布]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.1.0...HEAD
+- [版本号]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.1.1...v1.1.2
+- [未发布]: https://github.com/wangfumin1/claude-code-adapter-fastapi/compare/v1.1.2...HEAD
