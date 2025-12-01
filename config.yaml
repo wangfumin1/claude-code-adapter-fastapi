@@ -28,7 +28,7 @@ tool_selection_model_config:
   model: "qwen3-4b-instruct_1"
 recent_messages_count: 5
 max_tools_to_select: 3
-# 当工具选择失败或未启用时，将按此顺序作为默认工具列表
+# 当工具选择失败时，将按此顺序作为默认工具列表
 default_tools:
   - Read
   - Edit
